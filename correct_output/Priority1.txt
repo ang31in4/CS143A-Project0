@@ -1,0 +1,18 @@
+0.000ms : Process 1 arrived with priority 50
+0.000ms : Context switching to pid: 1
+
+0.500ms : Process 2 arrived with priority 5
+0.500ms : Context switching to pid: 2
+
+0.550ms : Process 3 arrived with priority 2
+0.550ms : Context switching to pid: 3
+
+0.570ms : Process 3 has finished execution and is exiting
+0.570ms : Context switching to pid: 2
+
+0.580ms : Process 2 has finished execution and is exiting
+0.580ms : Context switching to pid: 1
+
+0.780ms : Process 1 has finished execution and is exiting
+0.780ms : Context switching to pid: 0
+
