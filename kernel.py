@@ -13,9 +13,11 @@ PID = int
 # It is only here for your convinience and can be modified however you see fit.
 class PCB:
     pid: PID
+    priority: int
 
-    def __init__(self, pid: PID):
+    def __init__(self, pid: PID, priority: int = 0):
         self.pid = pid
+        self.priority = priority
 
 # This class represents the Kernel of the simulation.
 # The simulator will create an instance of this object and use it to respond to syscalls and interrupts.
@@ -42,17 +44,36 @@ class Kernel:
     # priority is the priority of new_process.
     # DO NOT rename or delete this method. DO NOT change its arguments.
     def new_process_arrived(self, new_process: PID, priority: int) -> PID:
+        new_pcb = PCB(new_process, priority)
+        self.ready_queue.append(new_pcb)
+
+        if self.running == self.idle_pcb:
+            return self.choose_next_process().pid
+    
+        if self.scheduling_algorithm == "Priority":
+            if new_pcb.priority < self.running.priority or (new_pcb.priority == self.running.priority and new_pcb.pid < self.running.pid):
+                self.ready_queue.append(self.running)  
+                self.running = self.idle_pcb
+                return self.choose_next_process().pid
+        
         return self.running.pid
+
 
     # This method is triggered every time the current process performs an exit syscall.
     # DO NOT rename or delete this method. DO NOT change its arguments.
     def syscall_exit(self) -> PID:
-        return self.running.pid
+        self.running = self.idle_pcb  
+        return self.choose_next_process().pid
 
     # This method is triggered when the currently running process requests to change its priority.
     # DO NOT rename or delete this method. DO NOT change its arguments.
     def syscall_set_priority(self, new_priority: int) -> PID:
-        return self.running.pid
+        self.running.priority = new_priority
+
+        if self.scheduling_algorithm == "Priority":
+            return self.choose_next_process().pid
+        else:
+            return self.running.pid
 
 
     # This is where you can select the next process to run.
@@ -60,12 +81,12 @@ class Kernel:
     # Feel free to modify this method as you see fit.
     # It is not required to actually use this method but it is recommended.
     def choose_next_process(self):
-        if len(self.ready_queue) == 0:
+      if len(self.ready_queue) == 0:
                 return self.idle_pcb
         
-        if self.scheduling_algorithm == "FCFS":
+      if self.scheduling_algorithm == "FCFS":
             self.running = self.idle_pcb
-        elif self.scheduling_algorithm == "Priority":
+      elif self.scheduling_algorithm == "Priority":
             self.running = self.idle_pcb
         
 
