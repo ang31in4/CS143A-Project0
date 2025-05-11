@@ -52,10 +52,11 @@ class Kernel:
             return self.running.pid
     
         if self.scheduling_algorithm == "Priority":
-            if new_pcb.priority < self.running.priority or (new_pcb.priority == self.running.priority and new_pcb.pid < self.running.pid):
+            if (new_pcb.priority < self.running.priority) or ((new_pcb.priority == self.running.priority) and (new_pcb.pid < self.running.pid)):
                 self.ready_queue.append(self.running)
                 self.running = self.idle_pcb
-                return self.choose_next_process().pid
+                self.running = self.choose_next_process()
+                return self.running.pid
         
         return self.running.pid
 
@@ -66,6 +67,7 @@ class Kernel:
         self.running = self.idle_pcb
         self.running = self.choose_next_process()
         return self.running.pid
+
 
     # This method is triggered when the currently running process requests to change its priority.
     # DO NOT rename or delete this method. DO NOT change its arguments.
@@ -87,9 +89,9 @@ class Kernel:
             return self.idle_pcb
 
       if self.scheduling_algorithm == "FCFS":
-            return self.ready_queue.popleft() # Take the earliest process in deque
+            return self.ready_queue.popleft() # Take the earliest process in deque and run it
 
       elif self.scheduling_algorithm == "Priority":
-            self.running = self.idle_pcb
-        
-
+            best_process = min(self.ready_queue, key=lambda p: (p.priority, p.pid))  # Find the min priority process in the ready queue
+            self.ready_queue.remove(best_process) # Remove the chosen process from the ready queue
+            return best_process
