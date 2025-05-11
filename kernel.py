@@ -52,7 +52,7 @@ class Kernel:
             return self.running.pid
     
         if self.scheduling_algorithm == "Priority":
-            if (new_pcb.priority < self.running.priority) or ((new_pcb.priority == self.running.priority) and (new_pcb.pid < self.running.pid)):
+            if new_pcb.priority < self.running.priority or (new_pcb.priority == self.running.priority and new_pcb.pid < self.running.pid):
                 self.ready_queue.append(self.running)
                 self.running = self.idle_pcb
                 self.running = self.choose_next_process()
