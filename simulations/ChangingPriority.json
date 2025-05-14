@@ -1,0 +1,36 @@
+{
+    "scheduling_algorithm": "Priority",
+    "processes": [
+        {
+            "arrival": 0,
+            "total_cpu_time": 700,
+            "priority": 40
+        },
+        {
+            "arrival": 500,
+            "total_cpu_time": 60,
+            "priority": 5,
+            "priority_change": [
+                {
+                    "arrival": 35,
+                    "new_priority": 50
+                }
+            ]
+        },
+        {
+            "arrival": 500,
+            "total_cpu_time": 120,
+            "priority": 5,
+            "priority_change": [
+                {
+                    "arrival": 35,
+                    "new_priority": 35
+                },
+                {
+                    "arrival": 110,
+                    "new_priority": 51
+                }
+            ]
+        }
+    ]
+}
