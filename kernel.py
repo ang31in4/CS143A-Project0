@@ -19,6 +19,12 @@ class PCB:
         self.pid = pid
         self.priority = priority
 
+
+class Logger:
+    def log(self, message: str) :
+        print(message)
+
+
 # This class represents the Kernel of the simulation.
 # The simulator will create an instance of this object and use it to respond to syscalls and interrupts.
 # DO NOT modify the name of this class or remove it.
@@ -28,17 +34,18 @@ class Kernel:
     waiting_queue: deque[PCB]
     running: PCB
     idle_pcb: PCB
+    logger: Logger
 
     # Called before the simulation begins.
     # Use this method to initilize any variables you need throughout the simulation.
     # DO NOT rename or delete this method. DO NOT change its arguments.
-    def __init__(self, scheduling_algorithm: str) :
+    def __init__(self, scheduling_algorithm: str, logger) :
         self.scheduling_algorithm = scheduling_algorithm
         self.ready_queue = deque()
         self.waiting_queue = deque()
         self.idle_pcb = PCB(0)
         self.running = self.idle_pcb
-    
+        self.logger = logger
 
     # This method is triggered every time a new process has arrived.
     # new_process is this process's PID.
