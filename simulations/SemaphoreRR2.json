@@ -1,0 +1,50 @@
+{
+    "scheduling_algorithm": "RR",
+    "processes": [
+        {
+            "arrival": 0,
+            "total_cpu_time": 700,
+            "semaphore": [
+                {"id": 0, "p": 30},
+                {"id": 0, "p": 34},
+                {"id": 0, "v": 57},
+                {"id": 0, "p": 100},
+                {"id": 0, "v": 120},
+                {"id": 0, "v": 520}
+            ]
+        },
+        {
+            "arrival": 30,
+            "total_cpu_time": 60,
+            "semaphore": [
+                {"id": 0, "p": 13},
+                {"id": 0, "p": 22},
+                {"id": 0, "v": 35},
+                {"id": 0, "p": 45},
+                {"id": 0, "v": 50}
+            ]
+        },
+        {
+            "arrival": 150,
+            "total_cpu_time": 300,
+            "semaphore": [
+                {"id": 0, "p": 30},
+                {"id": 0, "v": 50}
+            ]
+        },
+        {
+            "arrival": 200,
+            "total_cpu_time": 300,
+            "semaphore": [
+                {"id": 0, "p": 30},
+                {"id": 0, "v": 50}
+            ]
+        }
+    ],
+    "semaphores": [
+        {
+            "id": 0,
+            "init_val": 3
+        }
+    ]
+}

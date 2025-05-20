@@ -1,0 +1,50 @@
+{
+    "scheduling_algorithm": "Multilevel",
+    "processes": [
+        {
+            "arrival": 0,
+            "total_cpu_time": 544,
+            "type": "Background"
+        },
+        {
+            "arrival": 122,
+            "total_cpu_time": 34,
+            "type": "Foreground"
+        },
+        {
+            "arrival": 153,
+            "total_cpu_time": 112,
+            "type": "Background"
+        },
+        {
+            "arrival": 511,
+            "total_cpu_time": 100,
+            "type": "Foreground"
+        },
+        {
+            "arrival": 855,
+            "total_cpu_time": 50,
+            "type": "Foreground"
+        },
+        {
+            "arrival": 1100,
+            "total_cpu_time": 99,
+            "type": "Background"
+        },
+        {
+            "arrival": 1231,
+            "total_cpu_time": 212,
+            "type": "Background"
+        },
+        {
+            "arrival": 1241,
+            "total_cpu_time": 55,
+            "type": "Background"
+        },
+        {
+            "arrival": 1300,
+            "total_cpu_time": 41,
+            "type": "Foreground"
+        }
+    ]
+}

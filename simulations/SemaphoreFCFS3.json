@@ -1,0 +1,44 @@
+{
+    "scheduling_algorithm": "FCFS",
+    "processes": [
+        {
+            "arrival": 0,
+            "total_cpu_time": 60,
+            "priority": 40,
+            "semaphore": [
+                {"id": 0, "p": 30}
+            ]
+        },
+        {
+            "arrival": 40,
+            "total_cpu_time": 700,
+            "priority": 35,
+            "semaphore": [
+                {"id": 0, "p": 13},
+                {"id": 0, "p": 500}
+            ],
+            "priority_change": [
+                {
+                    "arrival": 110,
+                    "new_priority": 50
+                }
+            ]
+        },
+        {
+            "arrival": 150,
+            "total_cpu_time": 300,
+            "priority": 55,
+            "semaphore": [
+                {"id": 0, "v": 30},
+                {"id": 0, "v": 55},
+                {"id": 0, "v": 240}
+            ]
+        }
+    ],
+    "semaphores": [
+        {
+            "id": 0,
+            "init_val": 0
+        }
+    ]
+}

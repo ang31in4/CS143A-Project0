@@ -1,0 +1,34 @@
+{
+    "scheduling_algorithm": "RR",
+    "processes": [
+        {
+            "arrival": 0,
+            "total_cpu_time": 700,
+            "mutex": [
+                {"id": 0, "lock": 30},
+                {"id": 0, "unlock": 60},
+                {"id": 0, "lock": 100},
+                {"id": 0, "unlock": 220}
+            ]
+        },
+        {
+            "arrival": 30,
+            "total_cpu_time": 60,
+            "mutex": [
+                {"id": 0, "lock": 22},
+                {"id": 0, "unlock": 50}
+            ]
+        },
+        {
+            "arrival": 35,
+            "total_cpu_time": 300,
+            "mutex": [
+                {"id": 0, "lock": 30},
+                {"id": 0, "unlock": 150}
+            ]
+        }
+    ],
+    "mutexes": [
+        0
+    ]
+}

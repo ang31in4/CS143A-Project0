@@ -32,7 +32,7 @@ class Kernel:
     # Called before the simulation begins.
     # Use this method to initilize any variables you need throughout the simulation.
     # DO NOT rename or delete this method. DO NOT change its arguments.
-    def __init__(self, scheduling_algorithm: str):
+    def __init__(self, scheduling_algorithm: str) :
         self.scheduling_algorithm = scheduling_algorithm
         self.ready_queue = deque()
         self.waiting_queue = deque()
@@ -45,6 +45,7 @@ class Kernel:
     # priority is the priority of new_process.
     # DO NOT rename or delete this method. DO NOT change its arguments.
     def new_process_arrived(self, new_process: PID, priority: int) -> PID:
+        self.logger.log("greg")
         new_pcb = PCB(new_process, priority)
         self.ready_queue.append(new_pcb)
         return self.choose_next_process().pid

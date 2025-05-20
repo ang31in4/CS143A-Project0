@@ -1,0 +1,71 @@
+0.000ms : Foreground process 1 arrived with priority 32
+0.000ms : Context switching to pid: 1
+
+0.030ms : Mutex 0 initilized
+0.030ms : Process 1 called lock on mutex 0
+0.030ms : Foreground process 2 arrived with priority 32
+
+0.035ms : Foreground process 3 arrived with priority 32
+
+0.040ms : Context switching to pid: 2
+
+0.062ms : Process 2 called lock on mutex 0
+0.062ms : Context switching to pid: 3
+
+0.092ms : Process 3 called lock on mutex 0
+0.092ms : Context switching to pid: 1
+
+0.112ms : Process 1 called unlock on mutex 0
+
+0.130ms : Context switching to pid: 2
+
+0.150ms : Context switching to pid: 1
+
+0.172ms : Process 1 called lock on mutex 0
+0.172ms : Context switching to pid: 2
+
+0.180ms : Process 2 called unlock on mutex 0
+
+0.190ms : Process 2 has finished execution and is exiting
+0.190ms : Context switching to pid: 1
+
+0.310ms : Process 1 called unlock on mutex 0
+
+0.320ms : Context switching to pid: 3
+
+0.330ms : Context switching to pid: 1
+
+0.370ms : Context switching to pid: 3
+
+0.410ms : Context switching to pid: 1
+
+0.450ms : Context switching to pid: 3
+
+0.490ms : Context switching to pid: 1
+
+0.530ms : Context switching to pid: 3
+
+0.560ms : Process 3 called unlock on mutex 0
+
+0.570ms : Context switching to pid: 1
+
+0.610ms : Context switching to pid: 3
+
+0.650ms : Context switching to pid: 1
+
+0.690ms : Context switching to pid: 3
+
+0.730ms : Context switching to pid: 1
+
+0.770ms : Context switching to pid: 3
+
+0.810ms : Context switching to pid: 1
+
+0.850ms : Context switching to pid: 3
+
+0.870ms : Process 3 has finished execution and is exiting
+0.870ms : Context switching to pid: 1
+
+1.060ms : Process 1 has finished execution and is exiting
+1.060ms : Context switching to pid: 0
+

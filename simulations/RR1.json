@@ -1,0 +1,17 @@
+{
+    "scheduling_algorithm": "RR",
+    "processes": [
+        {
+            "arrival": 0,
+            "total_cpu_time": 495
+        },
+        {
+            "arrival": 230,
+            "total_cpu_time": 300
+        },
+        {
+            "arrival": 500,
+            "total_cpu_time": 250
+        }
+    ]
+}

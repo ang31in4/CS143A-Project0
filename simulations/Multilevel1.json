@@ -1,0 +1,25 @@
+{
+    "scheduling_algorithm": "Multilevel",
+    "processes": [
+        {
+            "arrival": 0,
+            "total_cpu_time": 495,
+            "type": "Foreground"
+        },
+        {
+            "arrival": 230,
+            "total_cpu_time": 300,
+            "type": "Foreground"
+        },
+        {
+            "arrival": 240,
+            "total_cpu_time": 250,
+            "type": "Background"
+        },
+        {
+            "arrival": 500,
+            "total_cpu_time": 250,
+            "type": "Background"
+        }
+    ]
+}

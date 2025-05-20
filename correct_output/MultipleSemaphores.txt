@@ -1,0 +1,101 @@
+0.000ms : Foreground process 1 arrived with priority 32
+0.000ms : Context switching to pid: 1
+
+0.030ms : Semaphore 0 initilized with value 0
+0.030ms : Process 1 called p on semaphore 0
+0.030ms : Context switching to pid: 0
+
+0.040ms : Foreground process 2 arrived with priority 32
+0.040ms : Context switching to pid: 2
+
+0.053ms : Process 2 called p on semaphore 0
+0.053ms : Context switching to pid: 0
+
+0.077ms : Foreground process 3 arrived with priority 32
+0.077ms : Context switching to pid: 3
+
+0.082ms : Foreground process 4 arrived with priority 32
+
+0.097ms : Foreground process 5 arrived with priority 32
+
+0.107ms : Semaphore 1 initilized with value 2
+0.107ms : Process 3 called p on semaphore 1
+
+0.110ms : Context switching to pid: 4
+
+0.140ms : Process 4 called p on semaphore 1
+
+0.143ms : Semaphore 2 initilized with value 1
+0.143ms : Process 4 called p on semaphore 2
+
+0.150ms : Context switching to pid: 5
+
+0.160ms : Process 5 called v on semaphore 1
+
+0.180ms : Process 5 called v on semaphore 1
+
+0.183ms : Process 5 has finished execution and is exiting
+0.183ms : Context switching to pid: 3
+
+0.205ms : Process 3 called p on semaphore 2
+0.205ms : Context switching to pid: 4
+
+0.231ms : Process 4 called v on semaphore 2
+
+0.235ms : Process 4 has finished execution and is exiting
+0.235ms : Context switching to pid: 3
+
+0.310ms : Process 3 called v on semaphore 2
+
+0.324ms : Process 3 has finished execution and is exiting
+0.324ms : Context switching to pid: 0
+
+0.432ms : Foreground process 6 arrived with priority 32
+0.432ms : Context switching to pid: 6
+
+0.462ms : Process 6 called v on semaphore 0
+
+0.470ms : Context switching to pid: 1
+
+0.490ms : Context switching to pid: 6
+
+0.507ms : Process 6 called v on semaphore 0
+
+0.530ms : Context switching to pid: 1
+
+0.540ms : Process 1 has finished execution and is exiting
+0.540ms : Context switching to pid: 2
+
+0.550ms : Process 2 called p on semaphore 1
+0.550ms : Context switching to pid: 6
+
+0.590ms : Context switching to pid: 2
+
+0.630ms : Context switching to pid: 6
+
+0.670ms : Context switching to pid: 2
+
+0.710ms : Context switching to pid: 6
+
+0.750ms : Context switching to pid: 2
+
+0.790ms : Context switching to pid: 6
+
+0.830ms : Context switching to pid: 2
+
+0.870ms : Context switching to pid: 6
+
+0.872ms : Process 6 called v on semaphore 0
+
+0.910ms : Context switching to pid: 2
+
+0.950ms : Context switching to pid: 6
+
+0.972ms : Process 6 has finished execution and is exiting
+0.972ms : Context switching to pid: 2
+
+1.249ms : Process 2 called p on semaphore 1
+
+1.449ms : Process 2 has finished execution and is exiting
+1.449ms : Context switching to pid: 0
+

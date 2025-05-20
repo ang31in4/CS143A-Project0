@@ -1,0 +1,46 @@
+{
+    "scheduling_algorithm": "Priority",
+    "processes": [
+        {
+            "arrival": 0,
+            "total_cpu_time": 700,
+            "priority": 35,
+            "semaphore": [
+                {"id": 0, "p": 30},
+                {"id": 0, "v": 70},
+                {"id": 0, "p": 100},
+                {"id": 0, "v": 500}
+            ],
+            "priority_change": [
+                {
+                    "arrival": 110,
+                    "new_priority": 50
+                }
+            ]
+        },
+        {
+            "arrival": 30,
+            "total_cpu_time": 60,
+            "priority": 40,
+            "semaphore": [
+                {"id": 0, "p": 30},
+                {"id": 0, "v": 50}
+            ]
+        },
+        {
+            "arrival": 150,
+            "total_cpu_time": 300,
+            "priority": 2,
+            "semaphore": [
+                {"id": 0, "p": 30},
+                {"id": 0, "v": 250}
+            ]
+        }
+    ],
+    "semaphores": [
+        {
+            "id": 0,
+            "init_val": 2
+        }
+    ]
+}

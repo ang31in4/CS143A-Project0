@@ -1,0 +1,41 @@
+{
+    "scheduling_algorithm": "RR",
+    "processes": [
+        {
+            "arrival": 0,
+            "total_cpu_time": 432
+        },
+        {
+            "arrival": 23,
+            "total_cpu_time": 444
+        },
+        {
+            "arrival": 553,
+            "total_cpu_time": 311
+        },
+        {
+            "arrival": 1000,
+            "total_cpu_time": 240
+        },
+        {
+            "arrival": 1023,
+            "total_cpu_time": 655
+        },
+        {
+            "arrival": 1033,
+            "total_cpu_time": 87
+        },
+        {
+            "arrival": 1400,
+            "total_cpu_time": 132
+        },
+        {
+            "arrival": 2532,
+            "total_cpu_time": 233
+        },
+        {
+            "arrival": 2533,
+            "total_cpu_time": 111
+        }
+    ]
+}

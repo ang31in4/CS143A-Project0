@@ -1,0 +1,55 @@
+{
+    "scheduling_algorithm": "Priority",
+    "processes": [
+        {
+            "arrival": 0,
+            "total_cpu_time": 700,
+            "priority": 35,
+            "mutex": [
+                {"id": 0, "lock": 30},
+                {"id": 0, "unlock": 40},
+                {"id": 0, "lock": 100},
+                {"id": 0, "unlock": 120}
+            ],
+            "priority_change": [
+                {
+                    "arrival": 110,
+                    "new_priority": 50
+                },
+                {
+                    "arrival": 233,
+                    "new_priority": 4
+                }
+            ]
+        },
+        {
+            "arrival": 30,
+            "total_cpu_time": 60,
+            "priority": 40,
+            "mutex": [
+                {"id": 0, "lock": 30},
+                {"id": 0, "unlock": 50}
+            ],
+            "priority_change": [
+                {
+                    "arrival": 33,
+                    "new_priority": 55
+                }
+            ]
+        },
+        {
+            "arrival": 130,
+            "total_cpu_time": 300,
+            "priority": 2,
+            "mutex": [
+                {"id": 0, "lock": 30},
+                {"id": 0, "unlock": 50},
+                {"id": 0, "lock": 77},
+                {"id": 0, "unlock": 200}
+            ]
+        }
+    ],
+    "mutexes": [
+        0
+    ]
+}

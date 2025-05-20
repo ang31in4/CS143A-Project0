@@ -1,0 +1,100 @@
+0.000ms : Background process 1 arrived with priority 32
+0.000ms : Context switching to pid: 1
+
+0.122ms : Foreground process 2 arrived with priority 32
+
+0.150ms : Background process 3 arrived with priority 32
+
+0.200ms : Context switching to pid: 2
+
+0.400ms : Context switching to pid: 1
+
+0.500ms : Foreground process 4 arrived with priority 32
+
+0.544ms : Process 1 has finished execution and is exiting
+0.544ms : Context switching to pid: 3
+
+0.600ms : Context switching to pid: 2
+
+0.640ms : Context switching to pid: 4
+
+0.680ms : Context switching to pid: 2
+
+0.720ms : Context switching to pid: 4
+
+0.760ms : Context switching to pid: 2
+
+0.800ms : Context switching to pid: 3
+
+0.994ms : Process 3 has finished execution and is exiting
+0.994ms : Context switching to pid: 4
+
+1.000ms : Foreground process 5 arrived with priority 32
+
+1.014ms : Process 4 has finished execution and is exiting
+1.014ms : Context switching to pid: 2
+
+1.050ms : Context switching to pid: 5
+
+1.090ms : Context switching to pid: 2
+
+1.100ms : Foreground process 6 arrived with priority 32
+
+1.130ms : Context switching to pid: 5
+
+1.170ms : Context switching to pid: 6
+
+1.210ms : Context switching to pid: 2
+
+1.231ms : Background process 7 arrived with priority 32
+
+1.250ms : Context switching to pid: 5
+
+1.290ms : Context switching to pid: 6
+
+1.330ms : Context switching to pid: 2
+
+1.337ms : Process 2 has finished execution and is exiting
+1.337ms : Context switching to pid: 5
+
+1.370ms : Context switching to pid: 6
+
+1.390ms : Context switching to pid: 7
+
+1.590ms : Context switching to pid: 6
+
+1.610ms : Context switching to pid: 5
+
+1.650ms : Context switching to pid: 6
+
+1.690ms : Context switching to pid: 5
+
+1.730ms : Context switching to pid: 6
+
+1.770ms : Context switching to pid: 5
+
+1.790ms : Context switching to pid: 7
+
+1.946ms : Process 7 has finished execution and is exiting
+1.946ms : Context switching to pid: 5
+
+1.960ms : Context switching to pid: 6
+
+2.000ms : Context switching to pid: 5
+
+2.040ms : Context switching to pid: 6
+
+2.080ms : Context switching to pid: 5
+
+2.120ms : Context switching to pid: 6
+
+2.160ms : Context switching to pid: 5
+
+2.200ms : Context switching to pid: 6
+
+2.236ms : Process 6 has finished execution and is exiting
+2.236ms : Context switching to pid: 5
+
+2.349ms : Process 5 has finished execution and is exiting
+2.349ms : Context switching to pid: 0
+
