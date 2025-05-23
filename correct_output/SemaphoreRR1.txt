@@ -60,50 +60,47 @@
 0.580ms : Context switching to pid: 1
 
 0.600ms : Process 1 called v on semaphore 0
-0.600ms : Context switching to pid: 4
 
-0.640ms : Process 4 has finished execution and is exiting
-0.640ms : Context switching to pid: 5
+0.620ms : Context switching to pid: 4
 
-0.650ms : Context switching to pid: 3
+0.660ms : Process 4 has finished execution and is exiting
+0.660ms : Context switching to pid: 5
 
-0.690ms : Context switching to pid: 1
+0.690ms : Context switching to pid: 3
 
-0.730ms : Context switching to pid: 5
+0.730ms : Context switching to pid: 1
 
-0.770ms : Context switching to pid: 3
+0.770ms : Context switching to pid: 5
 
-0.810ms : Context switching to pid: 1
+0.810ms : Context switching to pid: 3
 
-0.850ms : Context switching to pid: 5
+0.850ms : Context switching to pid: 1
 
-0.890ms : Context switching to pid: 3
+0.890ms : Context switching to pid: 5
 
-0.891ms : Process 3 has finished execution and is exiting
-0.891ms : Context switching to pid: 1
+0.912ms : Process 5 called v on semaphore 0
 
-0.930ms : Context switching to pid: 5
+0.930ms : Context switching to pid: 3
 
-0.932ms : Process 5 called v on semaphore 0
+0.931ms : Process 3 has finished execution and is exiting
+0.931ms : Context switching to pid: 1
 
-0.970ms : Context switching to pid: 1
+0.970ms : Context switching to pid: 5
 
-1.010ms : Context switching to pid: 5
+1.010ms : Context switching to pid: 1
 
-1.050ms : Context switching to pid: 1
+1.050ms : Context switching to pid: 5
 
-1.090ms : Context switching to pid: 5
+1.090ms : Context switching to pid: 1
 
-1.130ms : Context switching to pid: 1
+1.130ms : Context switching to pid: 5
 
-1.170ms : Context switching to pid: 5
+1.170ms : Context switching to pid: 1
 
-1.210ms : Context switching to pid: 1
+1.210ms : Context switching to pid: 5
 
-1.250ms : Context switching to pid: 5
-
-1.270ms : Process 5 has finished execution and is exiting
-1.270ms : Context switching to pid: 1
+1.250ms : Process 5 has finished execution and is exiting
+1.250ms : Context switching to pid: 1
 
 1.571ms : Process 1 has finished execution and is exiting
 1.571ms : Context switching to pid: 0

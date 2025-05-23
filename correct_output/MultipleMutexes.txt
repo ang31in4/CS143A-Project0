@@ -39,67 +39,65 @@
 
 0.530ms : Context switching to pid: 3
 
-0.540ms : Context switching to pid: 2
+0.570ms : Context switching to pid: 2
 
-0.550ms : Process 2 has finished execution and is exiting
-0.550ms : Context switching to pid: 1
+0.580ms : Process 2 has finished execution and is exiting
+0.580ms : Context switching to pid: 1
 
-0.580ms : Context switching to pid: 3
+0.610ms : Context switching to pid: 3
 
-0.620ms : Context switching to pid: 1
+0.643ms : Process 3 called unlock on mutex 2
 
-0.660ms : Context switching to pid: 3
+0.650ms : Context switching to pid: 1
 
-0.683ms : Process 3 called unlock on mutex 2
+0.690ms : Context switching to pid: 4
 
-0.700ms : Context switching to pid: 1
+0.730ms : Context switching to pid: 3
 
-0.740ms : Context switching to pid: 4
+0.770ms : Context switching to pid: 1
 
-0.760ms : Context switching to pid: 3
+0.810ms : Context switching to pid: 4
 
-0.793ms : Process 3 called unlock on mutex 0
+0.850ms : Context switching to pid: 3
 
-0.800ms : Context switching to pid: 1
+0.853ms : Process 3 called unlock on mutex 0
 
-0.817ms : Process 1 called unlock on mutex 1
+0.890ms : Context switching to pid: 1
 
-0.840ms : Context switching to pid: 4
+0.907ms : Process 1 called unlock on mutex 1
 
-0.880ms : Context switching to pid: 3
+0.930ms : Context switching to pid: 4
 
-0.920ms : Context switching to pid: 1
+0.970ms : Context switching to pid: 3
 
-0.960ms : Context switching to pid: 4
+1.010ms : Context switching to pid: 1
 
-1.000ms : Context switching to pid: 3
+1.050ms : Context switching to pid: 4
 
-1.040ms : Context switching to pid: 1
+1.090ms : Context switching to pid: 3
 
-1.080ms : Context switching to pid: 4
+1.113ms : Process 3 has finished execution and is exiting
+1.113ms : Context switching to pid: 1
 
-1.120ms : Context switching to pid: 3
+1.150ms : Context switching to pid: 4
 
-1.133ms : Process 3 has finished execution and is exiting
-1.133ms : Context switching to pid: 1
+1.160ms : Process 4 called unlock on mutex 2
 
-1.170ms : Context switching to pid: 4
+1.161ms : Process 4 called lock on mutex 1
 
-1.200ms : Process 4 called unlock on mutex 2
+1.190ms : Context switching to pid: 1
 
-1.201ms : Process 4 called lock on mutex 1
+1.230ms : Context switching to pid: 4
 
-1.210ms : Context switching to pid: 1
+1.270ms : Context switching to pid: 1
 
-1.250ms : Context switching to pid: 4
-
-1.290ms : Context switching to pid: 1
-
-1.310ms : Process 1 has finished execution and is exiting
 1.310ms : Context switching to pid: 4
 
-1.359ms : Process 4 called unlock on mutex 1
+1.339ms : Process 4 called unlock on mutex 1
 
-1.360ms : Process 4 has finished execution and is exiting
+1.340ms : Process 4 has finished execution and is exiting
+1.340ms : Context switching to pid: 1
+
+1.360ms : Process 1 has finished execution and is exiting
 1.360ms : Context switching to pid: 0
 
