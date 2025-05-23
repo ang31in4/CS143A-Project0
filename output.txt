@@ -1,1 +1,0 @@
-0.000ms : Foreground process 1 arrived with priority 32
