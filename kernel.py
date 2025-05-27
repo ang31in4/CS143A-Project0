@@ -31,7 +31,6 @@ class Logger:
 class Kernel:
     scheduling_algorithm: str
     ready_queue: deque[PCB]
-    waiting_queue: deque[PCB]
     running: PCB
     idle_pcb: PCB
     logger: Logger
@@ -42,11 +41,12 @@ class Kernel:
     def __init__(self, scheduling_algorithm: str, logger) :
         self.scheduling_algorithm = scheduling_algorithm
         self.ready_queue = deque()
-        self.waiting_queue = deque()
         self.idle_pcb = PCB(0)
         self.running = self.idle_pcb
         self.logger = logger
         self.time = 0
+        self.semaphores = {}
+        self.mutexes = {}
 
     # This method is triggered every time a new process has arrived.
     # new_process is this process's PID.
@@ -106,33 +106,107 @@ class Kernel:
     # This method is triggered when the currently running process requests to initialize a new semaphore.
     # DO NOT rename or delete this method. DO NOT change its arguments.
     def syscall_init_semaphore(self, semaphore_id: int, initial_value: int):
-        return
+        self.semaphores[semaphore_id] = {'count': initial_value, 'waiters': deque()}
         
     # This method is triggered when the currently running process calls p() on an existing semaphore.
     # DO NOT rename or delete this method. DO NOT change its arguments.
     def syscall_semaphore_p(self, semaphore_id: int) -> PID:
-        return self.running.pid
+        sem = self.semaphores[semaphore_id]
+        if sem['count'] > 0:
+            sem['count'] -= 1
+            return self.running.pid
+
+        # --- block path ---
+        sem['waiters'].append(self.running)
+        self.running = self.idle_pcb
+        return self.choose_next_process().pid
+
 
     # This method is triggered when the currently running process calls v() on an existing semaphore.
-    # DO NOT rename or delete this method. DO NOT change its arguments.
+    # DO NOT rename or delete this method. DO NOT change its arguments
     def syscall_semaphore_v(self, semaphore_id: int) -> PID:
-        return self.running.pid
+        sem = self.semaphores[semaphore_id]
+
+        if sem['waiters']:
+            # pick one waiter by priority or PID
+            if self.scheduling_algorithm == "Priority":
+                to_wake = min(sem['waiters'], key=lambda p: (p.priority, p.pid))
+            else:
+                to_wake = min(sem['waiters'], key=lambda p: p.pid)
+            sem['waiters'].remove(to_wake)
+
+            if self.scheduling_algorithm == "FCFS":
+                # non-preemptive
+                self.ready_queue.append(to_wake)
+                return self.running.pid
+            else:
+                # Priority & RR: preempt immediately
+                if self.running != self.idle_pcb:
+                    self.ready_queue.append(self.running)
+                self.running = to_wake
+                if self.scheduling_algorithm == "RR":
+                    self.time = 0
+                return self.running.pid
+        else:
+            # no waiters → bump the count
+            sem['count'] += 1
+            return self.running.pid
+
+    
 
     # This method is triggered when the currently running process requests to initialize a new mutex.
     # DO NOT rename or delete this method. DO NOT change its arguments.
     def syscall_init_mutex(self, mutex_id: int):
-        return
+        self.mutexes[mutex_id] = {'locked': False,'owner':  None,'waiters': deque()}
 
     # This method is triggered when the currently running process calls lock() on an existing mutex.
     # DO NOT rename or delete this method. DO NOT change its arguments.
     def syscall_mutex_lock(self, mutex_id: int) -> PID:
-        return self.running.pid
+        m = self.mutexes[mutex_id]
+        if not m['locked']:
+            m['locked'] = True
+            m['owner']  = self.running.pid
+            return self.running.pid
+        # --- block path ---
+        m['waiters'].append(self.running)
+        self.running = self.idle_pcb
+        return self.choose_next_process().pid
 
 
     # This method is triggered when the currently running process calls unlock() on an existing mutex.
     # DO NOT rename or delete this method. DO NOT change its arguments.
     def syscall_mutex_unlock(self, mutex_id: int) -> PID:
-        return self.running.pid
+        m = self.mutexes[mutex_id]
+
+        if m['waiters']:
+            # pick one waiter by priority or PID
+            if self.scheduling_algorithm == "Priority":
+                to_wake = min(m['waiters'], key=lambda p: (p.priority, p.pid))
+            else:
+                to_wake = min(m['waiters'], key=lambda p: p.pid)
+            m['waiters'].remove(to_wake)
+
+            # transfer lock
+            m['owner']  = to_wake.pid
+            m['locked'] = True
+
+            if self.scheduling_algorithm == "FCFS":
+                # non-preemptive
+                self.ready_queue.append(to_wake)
+                return self.running.pid
+            else:
+                # Priority & RR: preempt
+                if self.running != self.idle_pcb:
+                    self.ready_queue.append(self.running)
+                self.running = to_wake
+                if self.scheduling_algorithm == "RR":
+                    self.time = 0
+                return self.running.pid
+        else:
+            # no waiters → simple unlock
+            m['locked'] = False
+            m['owner']  = None
+            return self.running.pid
 
     # This function represents the hardware timer interrupt.
     # It is triggered every 10 microseconds and is the only way a kernel can track passing time.
