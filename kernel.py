@@ -31,6 +31,8 @@ class Logger:
 class Kernel:
     scheduling_algorithm: str
     ready_queue: deque[PCB]
+    foreground_queue: deque[PCB]
+    background_queue: deque[PCB]
     running: PCB
     idle_pcb: PCB
     logger: Logger
@@ -41,6 +43,8 @@ class Kernel:
     def __init__(self, scheduling_algorithm: str, logger) :
         self.scheduling_algorithm = scheduling_algorithm
         self.ready_queue = deque()
+        self.foreground_queue = deque()
+        self.background_queue = deque()
         self.idle_pcb = PCB(0)
         self.running = self.idle_pcb
         self.logger = logger
@@ -54,54 +58,95 @@ class Kernel:
     # DO NOT rename or delete this method. DO NOT change its arguments.
     def new_process_arrived(self, new_process: PID, priority: int, process_type: str) -> PID:
         self.logger.log(f"Ready queue len:{len(self.ready_queue)} when process {new_process} arrived")
-        self.ready_queue.append(PCB(new_process, priority, process_type))
-
-        # For FCFS and Priority, immediately choose new process
-        # For RR, only choose new process if idle
-        if self.scheduling_algorithm != "RR" or self.running == self.idle_pcb:
-            return self.choose_next_process().pid
+        if(self.scheduling_algorithm == "Multilevel"):
+            if(process_type == "Foreground"):
+                self.foreground_queue.append(PCB(new_process, priority))
+            else:
+                self.background_queue.append(PCB(new_process, priority))
         else:
-            return self.running.pid
+            self.ready_queue.append(PCB(new_process, priority))
+        self.choose_next_process()
+        return self.running.pid
 
 
     # This method is triggered every time the current process performs an exit syscall.
     # DO NOT rename or delete this method. DO NOT change its arguments.
     def syscall_exit(self) -> PID:
         self.running = self.idle_pcb
-        return self.choose_next_process().pid
+        self.choose_next_process()
+        return self.running.pid
 
 
     # This method is triggered when the currently running process requests to change its priority.
     # DO NOT rename or delete this method. DO NOT change its arguments.
     def syscall_set_priority(self, new_priority: int) -> PID:
         self.running.priority = new_priority
-        return self.choose_next_process().pid
+        self.choose_next_process()
+        return self.running.pid
 
 
     # This is where you can select the next process to run.
     # This method is not directly called by the simulator and is purely for your convinience.
     # Feel free to modify this method as you see fit.
     # It is not required to actually use this method but it is recommended.
+    # def choose_next_process(self):
+            
+    #     if self.scheduling_algorithm != "RR" and self.running != self.idle_pcb:                    # For FCFS and Priority, if running process is not idle_pcb, append it to front of queue
+    #         self.ready_queue.appendleft(self.running)
+            
+    #     if len(self.ready_queue) == 0:               # if the ready queue is still empty, that means there is no process running or waiting -> idle
+    #         return self.idle_pcb
+
+    #     if self.scheduling_algorithm == "FCFS":      # Set running process to first in queue if FCFS
+    #         self.running = self.ready_queue.popleft()
+    #     elif self.scheduling_algorithm == "Priority":                                        # If Priority, find best process choice in queue and set it to running process
+    #         best_process = min(self.ready_queue, key=lambda p: (p.priority, p.pid))
+    #         self.ready_queue.remove(best_process)
+    #         self.running = best_process
+    #     elif self.scheduling_algorithm == "RR":     # If RR, choose process in front of queue and reset time
+    #         self.running = self.ready_queue.popleft()
+    #         self.time = 0
+
+    #     return self.running                          # return new running process
+    
+    
     def choose_next_process(self):
-            
-        if self.scheduling_algorithm != "RR" and self.running != self.idle_pcb:                    # For FCFS and Priority, if running process is not idle_pcb, append it to front of queue
-            self.ready_queue.appendleft(self.running)
-            
-        if len(self.ready_queue) == 0:               # if the ready queue is still empty, that means there is no process running or waiting -> idle
-            return self.idle_pcb
+        if len(self.ready_queue) == 0:
+            return
+        
+        if self.scheduling_algorithm == "FCFS":
+            if self.running is self.idle_pcb:                # run next process only if scheduleer is idle
+                self.running = self.ready_queue.popleft()
 
-        if self.scheduling_algorithm == "FCFS":      # Set running process to first in queue if FCFS
-            self.running = self.ready_queue.popleft()
-        elif self.scheduling_algorithm == "Priority":                                        # If Priority, find best process choice in queue and set it to running process
-            best_process = min(self.ready_queue, key=lambda p: (p.priority, p.pid))
-            self.ready_queue.remove(best_process)
-            self.running = best_process
-        elif self.scheduling_algorithm == "RR":     # If RR, choose process in front of queue and reset time
-            self.running = self.ready_queue.popleft()
-            self.time = 0
+        elif self.scheduling_algorithm == "Priority":        # checks min priority/pid of every process
+            if self.running is not self.idle_pcb:
+                self.ready_queue.append(self.running)
 
+            min_index = 0
+            for i in range(1, len(self.ready_queue)):
+                process = self.ready_queue[i]
+                if process.priority < self.ready_queue[min_index].priority:
+                    min_index = i
+                elif process.priority == self.ready_queue[min_index].priority and process.pid < self.ready_queue[min_index].pid:
+                    min_index = i
+            next_process = self.ready_queue[min_index]
+            del self.ready_queue[min_index]
+            self.running = next_process
 
-        return self.running                          # return new running process
+        elif self.scheduling_algorithm == "RR":
+            if self.running is self.idle_pcb:               # if idle, then immediately start next process
+                self.running = self.ready_queue.popleft()
+                self.time = 0
+            elif self.time >= 4:                            # if time is up, switch to new process
+                self.ready_queue.append(self.running)
+                self.running = self.ready_queue.popleft()
+                self.time = 0
+
+        elif self.scheduling_algorithm == "Multilevel":
+
+        else:
+            print("Unknown scheduling algorithm")
+
 
     # This method is triggered when the currently running process requests to initialize a new semaphore.
     # DO NOT rename or delete this method. DO NOT change its arguments.
@@ -212,15 +257,10 @@ class Kernel:
     # It is triggered every 10 microseconds and is the only way a kernel can track passing time.
     # Do not use real time to track how much time has passed as time is simulated.
     # DO NOT rename or delete this method. DO NOT change its arguments.
-    def timer_interrupt(self) -> PID:
+    def timer_interrupt(self):
         # Only use timer in RR
-        if self.scheduling_algorithm == "RR" and self.running != self.idle_pcb:
-            self.time += 1  # Increment for every 10 microseconds
-
-        # Switch process if 40 microseconds have passed
-        if self.time >= 4:
-            if self.running != self.idle_pcb:
-                self.ready_queue.append(self.running)   # Put current process at end of queue
-            return self.choose_next_process().pid
-
-        return self.running.pid
+        if self.running is self.idle_pcb:
+            return
+        
+        self.time += 1                  # Increment for every 10 microseconds
+        self.choose_next_process()      # Force choose new process
