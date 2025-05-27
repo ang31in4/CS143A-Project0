@@ -54,8 +54,7 @@ class Kernel:
     # DO NOT rename or delete this method. DO NOT change its arguments.
     def new_process_arrived(self, new_process: PID, priority: int, process_type: str) -> PID:
         self.logger.log(f"Ready queue len:{len(self.ready_queue)} when process {new_process} arrived")
-        new_pcb = PCB(new_process, priority)
-        self.ready_queue.append(new_pcb)
+        self.ready_queue.append(PCB(new_process, priority, process_type))
 
         # For FCFS and Priority, immediately choose new process
         # For RR, only choose new process if idle
