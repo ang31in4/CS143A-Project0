@@ -140,7 +140,7 @@ class Kernel:
     # Feel free to modify this method as you see fit.
     # It is not required to actually use this method but it is recommended.
     def choose_next_process(self):
-        self.logger.log(f"Currently running: {self.running.pid} {self.state}, time: {self.time_quants}, context: {self.time_context}")
+        #self.logger.log(f"Currently running: {self.running.pid} {self.state}, time: {self.time_quants}, context: {self.time_context}")
         if self.scheduling_algorithm == "Multilevel":
             if self.state == "Foreground":
                 if len(self.foreground_queue) == 0 and self.running is self.idle_pcb:    # if the ready queue is still empty, that means there is no process running or waiting -> idle
@@ -300,18 +300,8 @@ class Kernel:
             m['owner']  = to_wake.pid
             m['locked'] = True
 
-            if self.scheduling_algorithm == "FCFS":
-                # non-preemptive
-                self.ready_queue.append(to_wake)
-                return self.running.pid
-            else:
-                # Priority & RR: preempt
-                if self.running != self.idle_pcb:
-                    self.ready_queue.append(self.running)
-                self.running = to_wake
-                if self.scheduling_algorithm == "RR":
-                    self.time_quants = 0
-                return self.running.pid
+            self.ready_queue.append(to_wake)
+            return self.running.pid
         else:
             # no waiters → simple unlock
             m['locked'] = False
