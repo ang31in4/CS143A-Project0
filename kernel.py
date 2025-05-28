@@ -288,6 +288,9 @@ class Kernel:
     def syscall_mutex_unlock(self, mutex_id: int) -> PID:
         m = self.mutexes[mutex_id]
 
+        if m['owner'] != self.running.pid:
+            return self.running.pid
+
         if m['waiters']:
             # pick one waiter by priority or PID
             if self.scheduling_algorithm == "Priority":
@@ -300,8 +303,23 @@ class Kernel:
             m['owner']  = to_wake.pid
             m['locked'] = True
 
-            self.ready_queue.append(to_wake)
-            return self.running.pid
+            if self.scheduling_algorithm == "Priority":
+                if to_wake.priority < self.running.priority:
+                    if self.running != self.idle_pcb:
+                        self.ready_queue.append(self.running)
+                    self.running = to_wake
+                    return self.running.pid
+                else:
+                    self.ready_queue.append(to_wake)
+                    return self.running.pid
+
+            elif self.scheduling_algorithm == "FCFS":
+                self.running = to_wake
+                return self.running.pid
+
+            elif self.scheduling_algorithm == "RR":
+                self.ready_queue.append(to_wake)
+                return self.running.pid
         else:
             # no waiters → simple unlock
             m['locked'] = False
