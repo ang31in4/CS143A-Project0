@@ -242,13 +242,21 @@ class Kernel:
                 # non-preemptive
                 self.ready_queue.append(to_wake)
                 return self.running.pid
-            else:
-                # Priority & RR: preempt immediately
-                if self.running != self.idle_pcb:
-                    self.ready_queue.append(self.running)
-                self.running = to_wake
-                if self.scheduling_algorithm == "RR":
-                    self.time_quants = 0
+
+            elif self.scheduling_algorithm == "Priority":
+                # Only preempt if the newly unblocked process has higher priority
+                if to_wake.priority < self.running.priority:
+                    if self.running != self.idle_pcb:
+                        self.ready_queue.append(self.running)
+                    self.running = to_wake
+                    return self.running.pid
+                else:
+                    self.ready_queue.append(to_wake)
+                    return self.running.pid
+
+            elif self.scheduling_algorithm == "RR":
+                self.ready_queue.append(to_wake)
+
                 return self.running.pid
         else:
             # no waiters → bump the count
