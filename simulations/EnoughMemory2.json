@@ -1,0 +1,50 @@
+{
+    "scheduling_algorithm": "FCFS",
+    "memory_size_MB": 100,
+    "processes": [
+        {
+            "arrival": 0,
+            "total_cpu_time": 495,
+            "needed_memory_MB": 50,
+            "memory_access": [
+                {"0x20001321": 100},
+                {"0x231fffff": 132},
+                {"0x23102100": 152},
+                {"0x20000000": 199},
+                {"0x22002100": 300}
+            ]
+        },
+        {
+            "arrival": 230,
+            "total_cpu_time": 300,
+            "needed_memory_MB": 29,
+            "memory_access": [
+                {"0x200e1121": 100},
+                {"0x21132d00": 152},
+                {"0x20000000": 199},
+                {"0x21cfffff": 200},
+                {"0x210fe100": 288}
+            ]
+        },
+        {
+            "arrival": 500,
+            "total_cpu_time": 250,
+            "needed_memory_MB": 22,
+            "memory_access": [
+                {"0x200e1121": 100},
+                {"0x21132d00": 152},
+                {"0x212fffff": 200}
+            ]
+        },
+        {
+            "arrival": 550,
+            "total_cpu_time": 250,
+            "needed_memory_MB": 22,
+            "memory_access": [
+                {"0x20de3321": 100},
+                {"0x20f2d0d0": 152},
+                {"0x20000000": 199}
+            ]
+        }
+    ]
+}

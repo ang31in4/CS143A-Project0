@@ -1,0 +1,21 @@
+{
+    "scheduling_algorithm": "RR",
+    "memory_size_MB": 100,
+    "processes": [
+        {
+            "arrival": 0,
+            "total_cpu_time": 495,
+            "needed_memory_MB": 40
+        },
+        {
+            "arrival": 230,
+            "total_cpu_time": 300,
+            "needed_memory_MB": 23
+        },
+        {
+            "arrival": 500,
+            "total_cpu_time": 250,
+            "needed_memory_MB": 22
+        }
+    ]
+}

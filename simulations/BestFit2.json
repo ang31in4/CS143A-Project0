@@ -1,0 +1,123 @@
+{
+    "scheduling_algorithm": "Priority",
+    "memory_size_MB": 345,
+    "processes": [
+        {
+            "arrival": 0,
+            "total_cpu_time": 17,
+            "needed_memory_MB": 8,
+            "priority": 4,
+            "memory_access": [
+                {"0x20000000": 4}
+            ]
+        },
+        {
+            "arrival": 15,
+            "total_cpu_time": 10,
+            "needed_memory_MB": 3,
+            "priority": 5,
+            "memory_access": [
+                {"0x20000000": 4}
+            ]
+        },
+        {
+            "arrival": 16,
+            "total_cpu_time": 150,
+            "needed_memory_MB": 9,
+            "priority": 3,
+            "memory_access": [
+                {"0x20000000": 4}
+            ]
+        },
+        {
+            "arrival": 23,
+            "total_cpu_time": 1000,
+            "needed_memory_MB": 20,
+            "priority": 25,
+            "memory_access": [
+                {"0x20000000": 4}
+            ]
+        },
+        {
+            "arrival": 100,
+            "total_cpu_time": 240,
+            "needed_memory_MB": 44,
+            "priority": 35,
+            "memory_access": [
+                {"0x20000000": 4}
+            ]
+        },
+        {
+            "arrival": 144,
+            "total_cpu_time": 60,
+            "needed_memory_MB": 5,
+            "priority": 2,
+            "memory_access": [
+                {"0x20000000": 4}
+            ]
+        },
+        {
+            "arrival": 200,
+            "total_cpu_time": 33,
+            "needed_memory_MB": 1,
+            "priority": 8,
+            "memory_access": [
+                {"0x20000000": 4}
+            ]
+        },
+        {
+            "arrival": 221,
+            "total_cpu_time": 132,
+            "needed_memory_MB": 70,
+            "priority": 37,
+            "memory_access": [
+                {"0x20000000": 4}
+            ]
+        },
+        {
+            "arrival": 260,
+            "total_cpu_time": 10,
+            "needed_memory_MB": 6,
+            "priority": 7,
+            "memory_access": [
+                {"0x20000000": 4}
+            ]
+        },
+        {
+            "arrival": 280,
+            "total_cpu_time": 10,
+            "needed_memory_MB": 6,
+            "priority": 7,
+            "memory_access": [
+                {"0x20000000": 4}
+            ]
+        },
+        {
+            "arrival": 300,
+            "total_cpu_time": 233,
+            "needed_memory_MB": 15,
+            "priority": 39,
+            "memory_access": [
+                {"0x20000000": 4}
+            ]
+        },
+        {
+            "arrival": 321,
+            "total_cpu_time": 111,
+            "needed_memory_MB": 2,
+            "priority": 35,
+            "memory_access": [
+                {"0x20000000": 4}
+            ]
+        },
+        {
+            "arrival": 333,
+            "total_cpu_time": 111,
+            "needed_memory_MB": 1,
+            "priority": 35,
+            "memory_access": [
+                {"0x20000000": 4}
+            ]
+        }
+    ]
+}

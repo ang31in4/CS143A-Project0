@@ -4,13 +4,14 @@ from dataclasses import dataclass
 from pathlib import Path
 import sys
 
-from kernel import Kernel
+from kernel import Kernel, MMU
 
 MICRO_S = int
 PID = int
 
 NUM_MICRO_IN_SEC: MICRO_S = 1000000
 TIMER_INTERRUPT_INTERVAL: MICRO_S = 10
+MB_TO_BYTES: int = 1048576
 
 VALID_SCHEDULING_ALGORITHMS = {"FCFS", "Priority", "RR", "Multilevel"}
 VALID_PROCESS_TYPES = {"Foreground", "Background"}
@@ -35,6 +36,9 @@ PROCESSES_MUTEX_ID: str = "id"
 PROCESS_MUTEX_LOCK: str = "lock"
 PROCESS_MUTEX_UNLOCK: str = "unlock"
 PROCESS_TYPE: str = "type"
+PROCESS_MEMORY_ACCESS: str = "memory_access"
+PROCESS_MEMORY_NEEDED: str = "needed_memory_MB"
+MEMORY_SIZE: str = "memory_size_MB"
 
 DEFAULT_PRIORITY = 32
 
@@ -66,6 +70,11 @@ class Mutex:
     initilized: bool
 
 @dataclass
+class MemoryEvent:
+    arrival: MICRO_S
+    address: int
+
+@dataclass
 class Process:
     arrival: MICRO_S
     total_cpu_time: MICRO_S
@@ -77,6 +86,8 @@ class Process:
     mutex_lock_events: list[MutexEvent]
     mutex_unlock_events: list[MutexEvent]
     process_type: str
+    memory_needed: int
+    memory_events: list[MemoryEvent]
 
 class Simulator:
     elapsed_time: MICRO_S
@@ -91,6 +102,7 @@ class Simulator:
     semaphores: dict[int, Semaphore]
     mutexes: dict[int, Mutex]
     student_logs: "StudentLogger"
+    mmu: MMU
 
     def __init__(self, emulation_description_path: Path, logfile_path: str, student_logs: bool):
         self.elapsed_time = 0
@@ -173,24 +185,54 @@ class Simulator:
                         assert(type(event[PROCESS_MUTEX_UNLOCK]) is int)
                         mutex_unlock_events.append(MutexEvent(event[PROCESS_MUTEX_UNLOCK], id))
 
-            # Sort all event lists such that their last element is always the next event
-            for event_list in [priority_changes, semaphore_p_events, semaphore_v_events, mutex_lock_events, mutex_unlock_events]:
-                event_list.sort(key=lambda c: c.arrival, reverse=True)
-
             process_type = "Foreground"
             if PROCESS_TYPE in process:
                 assert(process[PROCESS_TYPE] in VALID_PROCESS_TYPES)
                 process_type = process[PROCESS_TYPE]
 
+            # Default memory needed
+            memory_needed_mb = 10
+            if PROCESS_MEMORY_NEEDED in process:
+                assert(type(process[PROCESS_MEMORY_NEEDED]) is int)
+                memory_needed_mb = process[PROCESS_MEMORY_NEEDED]
+
+            memory_events = []
+            if PROCESS_MEMORY_ACCESS in process:
+                assert(type(process[PROCESS_MEMORY_ACCESS]) is list)
+                for access_list in process[PROCESS_MEMORY_ACCESS]:
+                    assert(type(access_list) is dict)
+                    for (address_str, arrival) in access_list.items():
+                        assert(type(address_str) is str and type(arrival) is int)
+                        try:
+                            address = int(address_str, base=0)
+                        except ValueError:
+                            assert(False)
+                        memory_events.append(MemoryEvent(arrival, address))
+
+            # Sort all event lists such that their last element is always the next event
+            for event_list in [priority_changes, semaphore_p_events, semaphore_v_events, mutex_lock_events, mutex_unlock_events, memory_events]:
+                event_list.sort(key=lambda c: c.arrival, reverse=True)
+
+
             process = Process(process[ARRIVAL], process[TOTAL_CPU_TIME], 0, priority, priority_changes, \
-                              semaphore_p_events, semaphore_v_events, mutex_lock_events, mutex_unlock_events, process_type)
+                              semaphore_p_events, semaphore_v_events, mutex_lock_events, mutex_unlock_events, \
+                                process_type, memory_needed_mb * MB_TO_BYTES, memory_events)
             assert_events_are_valid_and_not_at_same_time(process)
             self.arrivals.append(process)
         # Sort arrivals so earliest arrivals are at the end.
         self.arrivals.sort(key=lambda p: p.arrival, reverse=True)
 
+        # Default memory size
+        memory_size_mb = 1000
+
+        if MEMORY_SIZE in emulation_json:
+            assert(type(emulation_json[MEMORY_SIZE]) is int)
+            memory_size_mb = emulation_json[MEMORY_SIZE]
+
+        self.mmu = MMU(self.student_logs)
+
         assert("scheduling_algorithm" in emulation_json and emulation_json["scheduling_algorithm"] in VALID_SCHEDULING_ALGORITHMS)
-        self.kernel = Kernel(emulation_json["scheduling_algorithm"], self.student_logs)
+        self.kernel = Kernel(emulation_json["scheduling_algorithm"], self.student_logs, self.mmu, memory_size_mb * MB_TO_BYTES)
 
         self.simlog = open(logfile_path, 'w')
 
@@ -225,15 +267,8 @@ class Simulator:
 
         # If the current_process has finished execution
         if current_process.total_cpu_time <= current_process.elapsed_cpu_time:
-            exiting_process = self.current_process
-            self.log(f"Process {exiting_process} has finished execution and is exiting")
-            new_process = self.kernel.syscall_exit()
-            if new_process == exiting_process:
-                raise SimulationError(f"Attempted to continue execution of exiting process (pid = {exiting_process})")
-            
-            del self.processes[exiting_process]
-            
-            self.switch_process(new_process)
+            self.log(f"Process {self.current_process} has finished execution and is exiting")
+            self.exit_current_process()
             return
 
 
@@ -273,6 +308,26 @@ class Simulator:
             self.log(f"Process {self.current_process} called unlock on mutex {mutex_unlock.id}")
             self.switch_process(self.kernel.syscall_mutex_unlock(mutex_unlock.id))
 
+        event_list = current_process.memory_events
+        while len(event_list) > 0 and event_list[len(event_list) - 1].arrival <= current_process.elapsed_cpu_time:
+            memory_event = event_list.pop()
+            translation = self.mmu.translate(memory_event.address, self.current_process)
+            if translation is None:
+                self.log(f"Process {self.current_process} tried to access virtual address 0x{memory_event.address:0x} which caused a segfault")
+                self.log(f"Process {self.current_process} has trapped and is forcefully exiting")
+                self.exit_current_process()
+            else:
+                self.log(f"Process {self.current_process} accessed virtual address 0x{memory_event.address:0x} which translates to physical address 0x{translation:0x}")
+
+    def exit_current_process(self):
+        new_process = self.kernel.syscall_exit()
+        if new_process == self.current_process:
+            raise SimulationError(f"Attempted to continue execution of exiting process (pid = {self.current_process})")
+        
+        del self.processes[self.current_process]
+        
+        self.switch_process(new_process)
+
     def check_semaphore_inited(self, id: int):
         if not self.semaphores[id].initilized:
             self.log(f"Semaphore {id} initilized with value {self.semaphores[id].init_val}")
@@ -289,8 +344,13 @@ class Simulator:
         while len(self.arrivals) > 0 and self.arrivals[len(self.arrivals) - 1].arrival == self.elapsed_time:
             new_process = self.arrivals.pop()
             self.processes[self.next_pid] = new_process
-            self.log(f"{new_process.process_type} process {self.next_pid} arrived with priority {new_process.priority}")
-            self.switch_process(self.kernel.new_process_arrived(self.next_pid, new_process.priority, new_process.process_type))
+            self.log(f"{new_process.process_type} process {self.next_pid} arrived with priority {new_process.priority} requesting {new_process.memory_needed / MB_TO_BYTES}MB of memory")
+            kernel_response = self.kernel.new_process_arrived(self.next_pid, new_process.priority, new_process.process_type, new_process.memory_needed)
+            if kernel_response == -1:
+                self.log(f"Unable to allocate memory for new process. Dropping process.")
+                del self.processes[self.next_pid]
+            else:
+                self.switch_process(kernel_response)
             self.next_pid += 1
 
 
@@ -349,6 +409,10 @@ def assert_events_are_valid_and_not_at_same_time(process: Process):
         event_arrivals.add(event.arrival)
     
     for event in process.mutex_unlock_events:
+        assert(event.arrival not in event_arrivals)
+        event_arrivals.add(event.arrival)
+    
+    for event in process.memory_events:
         assert(event.arrival not in event_arrivals)
         event_arrivals.add(event.arrival)
 

@@ -1,0 +1,53 @@
+0.000ms : Foreground process 1 arrived with priority 32 requesting 50.0MB of memory
+0.000ms : Context switching to pid: 1
+
+0.100ms : Process 1 accessed virtual address 0x20001321 which translates to physical address 0xa01321
+
+0.132ms : Process 1 accessed virtual address 0x231fffff which translates to physical address 0x3bfffff
+
+0.152ms : Process 1 accessed virtual address 0x23102100 which translates to physical address 0x3b02100
+
+0.199ms : Process 1 accessed virtual address 0x20000000 which translates to physical address 0xa00000
+
+0.230ms : Foreground process 2 arrived with priority 32 requesting 29.0MB of memory
+
+0.300ms : Process 1 accessed virtual address 0x22002100 which translates to physical address 0x2a02100
+
+0.495ms : Process 1 has finished execution and is exiting
+0.495ms : Context switching to pid: 2
+
+0.500ms : Foreground process 3 arrived with priority 32 requesting 22.0MB of memory
+
+0.550ms : Foreground process 4 arrived with priority 32 requesting 22.0MB of memory
+
+0.595ms : Process 2 accessed virtual address 0x200e1121 which translates to physical address 0x3ce1121
+
+0.647ms : Process 2 accessed virtual address 0x21132d00 which translates to physical address 0x4d32d00
+
+0.694ms : Process 2 accessed virtual address 0x20000000 which translates to physical address 0x3c00000
+
+0.695ms : Process 2 accessed virtual address 0x21cfffff which translates to physical address 0x58fffff
+
+0.783ms : Process 2 accessed virtual address 0x210fe100 which translates to physical address 0x4cfe100
+
+0.795ms : Process 2 has finished execution and is exiting
+0.795ms : Context switching to pid: 3
+
+0.895ms : Process 3 accessed virtual address 0x200e1121 which translates to physical address 0xae1121
+
+0.947ms : Process 3 accessed virtual address 0x21132d00 which translates to physical address 0x1b32d00
+
+0.995ms : Process 3 accessed virtual address 0x212fffff which translates to physical address 0x1cfffff
+
+1.045ms : Process 3 has finished execution and is exiting
+1.045ms : Context switching to pid: 4
+
+1.145ms : Process 4 accessed virtual address 0x20de3321 which translates to physical address 0x2de3321
+
+1.197ms : Process 4 accessed virtual address 0x20f2d0d0 which translates to physical address 0x2f2d0d0
+
+1.244ms : Process 4 accessed virtual address 0x20000000 which translates to physical address 0x2000000
+
+1.295ms : Process 4 has finished execution and is exiting
+1.295ms : Context switching to pid: 0
+

@@ -1,0 +1,194 @@
+0.000ms : Foreground process 1 arrived with priority 32 requesting 5.0MB of memory
+0.000ms : Context switching to pid: 1
+
+0.004ms : Process 1 accessed virtual address 0x20000000 which translates to physical address 0xa00000
+
+0.023ms : Foreground process 2 arrived with priority 32 requesting 20.0MB of memory
+
+0.040ms : Context switching to pid: 2
+
+0.044ms : Process 2 accessed virtual address 0x20000000 which translates to physical address 0xf00000
+
+0.080ms : Context switching to pid: 1
+
+0.120ms : Context switching to pid: 2
+
+0.160ms : Context switching to pid: 1
+
+0.200ms : Context switching to pid: 2
+
+0.240ms : Context switching to pid: 1
+
+0.280ms : Context switching to pid: 2
+
+0.320ms : Context switching to pid: 1
+
+0.360ms : Context switching to pid: 2
+
+0.400ms : Context switching to pid: 1
+
+0.440ms : Context switching to pid: 2
+
+0.480ms : Context switching to pid: 1
+
+0.520ms : Context switching to pid: 2
+
+0.553ms : Foreground process 3 arrived with priority 32 requesting 33.0MB of memory
+
+0.560ms : Context switching to pid: 1
+
+0.600ms : Context switching to pid: 3
+
+0.604ms : Process 3 accessed virtual address 0x20000000 which translates to physical address 0x2300000
+
+0.640ms : Context switching to pid: 2
+
+0.680ms : Context switching to pid: 1
+
+0.693ms : Process 1 has finished execution and is exiting
+0.693ms : Context switching to pid: 3
+
+0.730ms : Context switching to pid: 2
+
+0.770ms : Context switching to pid: 3
+
+0.810ms : Context switching to pid: 2
+
+0.850ms : Context switching to pid: 3
+
+0.890ms : Context switching to pid: 2
+
+0.930ms : Context switching to pid: 3
+
+0.970ms : Context switching to pid: 2
+
+1.000ms : Foreground process 4 arrived with priority 32 requesting 1.0MB of memory
+
+1.010ms : Context switching to pid: 3
+
+1.013ms : Process 3 has finished execution and is exiting
+1.013ms : Context switching to pid: 4
+
+1.017ms : Process 4 accessed virtual address 0x20000000 which translates to physical address 0xa00000
+
+1.023ms : Foreground process 5 arrived with priority 32 requesting 5.0MB of memory
+
+1.033ms : Foreground process 6 arrived with priority 32 requesting 50.0MB of memory
+
+1.050ms : Context switching to pid: 2
+
+1.090ms : Context switching to pid: 5
+
+1.094ms : Process 5 accessed virtual address 0x20000000 which translates to physical address 0x2300000
+
+1.130ms : Context switching to pid: 6
+
+1.134ms : Process 6 accessed virtual address 0x20000000 which translates to physical address 0x2800000
+
+1.170ms : Context switching to pid: 4
+
+1.178ms : Process 4 has finished execution and is exiting
+1.178ms : Context switching to pid: 2
+
+1.210ms : Context switching to pid: 5
+
+1.250ms : Context switching to pid: 6
+
+1.290ms : Context switching to pid: 2
+
+1.330ms : Context switching to pid: 5
+
+1.370ms : Context switching to pid: 6
+
+1.400ms : Foreground process 7 arrived with priority 32 requesting 70.0MB of memory
+1.400ms : Unable to allocate memory for new process. Dropping process.
+
+1.410ms : Context switching to pid: 2
+
+1.450ms : Context switching to pid: 5
+
+1.490ms : Context switching to pid: 6
+
+1.530ms : Context switching to pid: 2
+
+1.570ms : Context switching to pid: 5
+
+1.610ms : Context switching to pid: 6
+
+1.650ms : Context switching to pid: 2
+
+1.690ms : Context switching to pid: 5
+
+1.730ms : Context switching to pid: 6
+
+1.770ms : Context switching to pid: 2
+
+1.810ms : Context switching to pid: 5
+
+1.850ms : Context switching to pid: 6
+
+1.890ms : Context switching to pid: 2
+
+1.930ms : Context switching to pid: 5
+
+1.950ms : Process 5 has finished execution and is exiting
+1.950ms : Context switching to pid: 6
+
+1.970ms : Process 6 has finished execution and is exiting
+1.970ms : Context switching to pid: 2
+
+2.078ms : Process 2 has finished execution and is exiting
+2.078ms : Context switching to pid: 0
+
+2.532ms : Foreground process 8 arrived with priority 32 requesting 15.0MB of memory
+2.532ms : Context switching to pid: 8
+
+2.533ms : Foreground process 9 arrived with priority 32 requesting 33.0MB of memory
+
+2.536ms : Process 8 accessed virtual address 0x20000000 which translates to physical address 0xa00000
+
+2.570ms : Context switching to pid: 9
+
+2.574ms : Process 9 accessed virtual address 0x20000000 which translates to physical address 0x1900000
+
+2.600ms : Foreground process 10 arrived with priority 32 requesting 62.0MB of memory
+
+2.610ms : Context switching to pid: 8
+
+2.633ms : Foreground process 11 arrived with priority 32 requesting 1.0MB of memory
+2.633ms : Unable to allocate memory for new process. Dropping process.
+
+2.650ms : Context switching to pid: 10
+
+2.654ms : Process 10 accessed virtual address 0x20000000 which translates to physical address 0x3a00000
+
+2.670ms : Process 10 has finished execution and is exiting
+2.670ms : Context switching to pid: 9
+
+2.700ms : Context switching to pid: 8
+
+2.730ms : Foreground process 12 arrived with priority 32 requesting 50.0MB of memory
+
+2.740ms : Context switching to pid: 9
+
+2.780ms : Context switching to pid: 12
+
+2.784ms : Process 12 accessed virtual address 0x20000000 which translates to physical address 0x3a00000
+
+2.820ms : Context switching to pid: 8
+
+2.860ms : Context switching to pid: 9
+
+2.861ms : Process 9 has finished execution and is exiting
+2.861ms : Context switching to pid: 12
+
+2.900ms : Context switching to pid: 8
+
+2.940ms : Context switching to pid: 12
+
+2.972ms : Process 12 has finished execution and is exiting
+2.972ms : Context switching to pid: 8
+
+3.007ms : Process 8 has finished execution and is exiting
+3.007ms : Context switching to pid: 0
+

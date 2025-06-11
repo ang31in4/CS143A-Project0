@@ -1,0 +1,88 @@
+0.000ms : Foreground process 1 arrived with priority 4 requesting 8.0MB of memory
+0.000ms : Context switching to pid: 1
+
+0.004ms : Process 1 accessed virtual address 0x20000000 which translates to physical address 0xa00000
+
+0.023ms : Foreground process 2 arrived with priority 25 requesting 20.0MB of memory
+
+0.045ms : Foreground process 3 arrived with priority 6 requesting 3.0MB of memory
+
+0.100ms : Foreground process 4 arrived with priority 35 requesting 44.0MB of memory
+
+0.144ms : Foreground process 5 arrived with priority 2 requesting 5.0MB of memory
+0.144ms : Context switching to pid: 5
+
+0.148ms : Process 5 accessed virtual address 0x20000000 which translates to physical address 0x5500000
+
+0.200ms : Foreground process 6 arrived with priority 8 requesting 1.0MB of memory
+
+0.204ms : Process 5 has finished execution and is exiting
+0.204ms : Context switching to pid: 1
+
+0.210ms : Process 1 has finished execution and is exiting
+0.210ms : Context switching to pid: 3
+
+0.214ms : Process 3 accessed virtual address 0x20000000 which translates to physical address 0x2600000
+
+0.221ms : Foreground process 7 arrived with priority 37 requesting 70.0MB of memory
+
+0.230ms : Process 3 has finished execution and is exiting
+0.230ms : Context switching to pid: 6
+
+0.234ms : Process 6 accessed virtual address 0x20000000 which translates to physical address 0x5a00000
+
+0.260ms : Foreground process 8 arrived with priority 7 requesting 6.0MB of memory
+0.260ms : Context switching to pid: 8
+
+0.264ms : Process 8 accessed virtual address 0x20000000 which translates to physical address 0xa00000
+
+0.270ms : Process 8 has finished execution and is exiting
+0.270ms : Context switching to pid: 6
+
+0.273ms : Process 6 has finished execution and is exiting
+0.273ms : Context switching to pid: 2
+
+0.277ms : Process 2 accessed virtual address 0x20000000 which translates to physical address 0x1200000
+
+0.280ms : Foreground process 9 arrived with priority 7 requesting 6.0MB of memory
+0.280ms : Context switching to pid: 9
+
+0.284ms : Process 9 accessed virtual address 0x20000000 which translates to physical address 0x5500000
+
+0.290ms : Process 9 has finished execution and is exiting
+0.290ms : Context switching to pid: 2
+
+0.300ms : Foreground process 10 arrived with priority 39 requesting 15.0MB of memory
+
+0.321ms : Foreground process 11 arrived with priority 35 requesting 2.0MB of memory
+
+0.333ms : Foreground process 12 arrived with priority 35 requesting 1.0MB of memory
+
+1.283ms : Process 2 has finished execution and is exiting
+1.283ms : Context switching to pid: 4
+
+1.287ms : Process 4 accessed virtual address 0x20000000 which translates to physical address 0x2900000
+
+1.523ms : Process 4 has finished execution and is exiting
+1.523ms : Context switching to pid: 11
+
+1.527ms : Process 11 accessed virtual address 0x20000000 which translates to physical address 0x2600000
+
+1.634ms : Process 11 has finished execution and is exiting
+1.634ms : Context switching to pid: 12
+
+1.638ms : Process 12 accessed virtual address 0x20000000 which translates to physical address 0x2800000
+
+1.745ms : Process 12 has finished execution and is exiting
+1.745ms : Context switching to pid: 7
+
+1.749ms : Process 7 accessed virtual address 0x20000000 which translates to physical address 0x5b00000
+
+1.877ms : Process 7 has finished execution and is exiting
+1.877ms : Context switching to pid: 10
+
+1.881ms : Process 10 accessed virtual address 0x20000000 which translates to physical address 0xa100000
+
+2.110ms : Process 10 has finished execution and is exiting
+2.110ms : Context switching to pid: 0
+

@@ -1,0 +1,105 @@
+{
+    "scheduling_algorithm": "RR",
+    "memory_size_MB": 60,
+    "processes": [
+        {
+            "arrival": 0,
+            "total_cpu_time": 333,
+            "needed_memory_MB": 5,
+            "memory_access": [
+                {"0x20000000": 4}
+            ]
+        },
+        {
+            "arrival": 23,
+            "total_cpu_time": 900,
+            "needed_memory_MB": 15,
+            "memory_access": [
+                {"0x20000000": 4}
+            ]
+        },
+        {
+            "arrival": 553,
+            "total_cpu_time": 200,
+            "needed_memory_MB": 25,
+            "memory_access": [
+                {"0x20000000": 4},
+                {"0x1fffffff": 35}
+            ]
+        },
+        {
+            "arrival": 1000,
+            "total_cpu_time": 45,
+            "needed_memory_MB": 1,
+            "memory_access": [
+                {"0x20000000": 4}
+            ]
+        },
+        {
+            "arrival": 1023,
+            "total_cpu_time": 300,
+            "needed_memory_MB": 5,
+            "memory_access": [
+                {"0x20000000": 4},
+                {"0x30000000": 35}
+            ]
+        },
+        {
+            "arrival": 1033,
+            "total_cpu_time": 300,
+            "needed_memory_MB": 3,
+            "memory_access": [
+                {"0x20000000": 4}
+            ]
+        },
+        {
+            "arrival": 1400,
+            "total_cpu_time": 20,
+            "needed_memory_MB": 20,
+            "memory_access": [
+                {"0x20000000": 4}
+            ]
+        },
+        {
+            "arrival": 2532,
+            "total_cpu_time": 233,
+            "needed_memory_MB": 15,
+            "memory_access": [
+                {"0x20000000": 4}
+            ]
+        },
+        {
+            "arrival": 2533,
+            "total_cpu_time": 111,
+            "needed_memory_MB": 33,
+            "memory_access": [
+                {"0x20000000": 4},
+                {"0x0": 35}
+            ]
+        },
+        {
+            "arrival": 2600,
+            "total_cpu_time": 20,
+            "needed_memory_MB": 19,
+            "memory_access": [
+                {"0x20000000": 4}
+            ]
+        },
+        {
+            "arrival": 2633,
+            "total_cpu_time": 111,
+            "needed_memory_MB": 1,
+            "memory_access": [
+                {"0x20000000": 4}
+            ]
+        },
+        {
+            "arrival": 2730,
+            "total_cpu_time": 111,
+            "needed_memory_MB": 4,
+            "memory_access": [
+                {"0x20000000": 4}
+            ]
+        }
+    ]
+}
