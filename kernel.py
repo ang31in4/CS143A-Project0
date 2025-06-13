@@ -19,12 +19,14 @@ class PCB:
     priority: int
     num_quantum_ticks: int
     process_type: str
+    memory_needed: int
 
-    def __init__(self, pid: PID, priority: int, process_type: str):
+    def __init__(self, pid: PID, priority: int, process_type: str, memory_needed: int):
         self.pid = pid
         self.priority = priority
         self.num_quantum_ticks = 0
         self.process_type = process_type
+        self.memory_needed = memory_needed
 
     def __str__(self):
         return f"({self.pid}, {self.priority})"
@@ -67,6 +69,8 @@ class Kernel:
     rr_ready_queue: deque[PCB]
     active_queue: str
     active_queue_num_ticks: int
+    mmu: "MMU"
+    memory_size: int
 
     # Called before the simulation begins.
     # Use this function to initilize any variables you need throughout the simulation.
@@ -75,7 +79,7 @@ class Kernel:
         self.scheduling_algorithm = scheduling_algorithm
         self.ready_queue = deque()
         self.waiting_queue = deque()
-        self.idle_pcb = PCB(0, 0, "Foreground")
+        self.idle_pcb = PCB(0, 0, "Foreground", 0)
         self.running = self.idle_pcb
         self.semaphores = dict()
         self.mutexes = dict()
@@ -84,14 +88,18 @@ class Kernel:
         self.rr_ready_queue = deque()
         self.active_queue = FOREGROUND
         self.active_queue_num_ticks = 0
+        self.mmu = mmu
+        self.memory_size = memory_size
+        self.memory = [(0, memory_size-11, None)]
 
     # This function is triggered every time a new process has arrived.
     # new_process is this process's PID.
     # priority is the priority of new_process.
     # DO NOT rename or delete this method. DO NOT change its arguments.
     def new_process_arrived(self, new_process: PID, priority: int, process_type: str, memory_needed: int) -> PID:
-        self.ready_queue.append(PCB(new_process, priority, process_type))
-        
+        self.ready_queue.append(PCB(new_process, priority, process_type, memory_needed))
+        self.mmu.allocate_memory(self.memory, memory_needed, new_process)
+
         # Neither queue was active, so when a process arrives, it is the start of a new queue
         if self.scheduling_algorithm == MULTILEVEL and self.running is self.idle_pcb:
             self.active_queue_num_ticks = 0
@@ -101,6 +109,7 @@ class Kernel:
     # This function is triggered every time the current process performs an exit syscall.
     # DO NOT rename or delete this method. DO NOT change its arguments.
     def syscall_exit(self) -> PID:
+        self.mmu.free_memory(self.memory, self.running.pid)
         self.running = self.idle_pcb
         self.choose_next_process()
         return self.running.pid
@@ -294,6 +303,7 @@ class MMU:
     # Use this function to initilize any variables you need throughout the simulation.
     # DO NOT rename or delete this method. DO NOT change its arguments.
     def __init__(self, logger):
+        self.logger = logger
         pass
 
     # Translate the virtual address to its physical address.
@@ -301,6 +311,39 @@ class MMU:
     # DO NOT rename or delete this method. DO NOT change its arguments.
     def translate(self, address: int, pid: PID) -> int | None:
         return None
+
+    # Allocate a part of the memory (passed by the kernel) to the process with id: process_id
+    # Returns -1 if not enough space, otherwise returns process_id
+    def allocate_memory(self, memory, size, process_id):
+        for i, (start, end, pid) in enumerate(memory):
+            if pid is None and (end - start + 1) >= size:  # Found a hole
+                allocated_block = (start, start + size - 1, process_id)
+                remaining_block = (start + size, end, None) if start + size <= end else None
+                
+                memory[i] = allocated_block
+                if remaining_block:
+                    memory.insert(i + 1, remaining_block)
+                return process_id  # Allocation successful
+        return -1  # Not enough space
+
+    # Deallocate the part of memory used by given process
+    # Combine holes in memory
+    # Returns -1 if process was not found and process id if successful
+    def free_memory(self, memory, process_id):
+        for i, (start, end, pid) in enumerate(memory):
+            if pid == process_id:
+                memory[i] = (start, end, None)  # Mark as a hole
+                
+                # Merge adjacent free blocks
+                if i > 0 and memory[i - 1][2] is None:
+                    memory[i - 1] = (memory[i - 1][0], end, None)
+                    del memory[i]
+                    i -= 1
+                if i < len(memory) - 1 and memory[i + 1][2] is None:
+                    memory[i] = (start, memory[i + 1][1], None)
+                    del memory[i + 1]
+                return process_id  # Deallocation successful
+        return -1  # Process not found
 
 def exceeded_quantum(pcb: PCB) -> bool:
     if pcb.num_quantum_ticks >= RR_QUANTUM_TICKS:
