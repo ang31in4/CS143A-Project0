@@ -90,26 +90,29 @@ class Kernel:
         self.active_queue_num_ticks = 0
         self.mmu = mmu
         self.memory_size = memory_size
-        self.memory = [(0, memory_size-11, None)]
+        self.mmu.define_memory(memory_size)
 
     # This function is triggered every time a new process has arrived.
     # new_process is this process's PID.
     # priority is the priority of new_process.
     # DO NOT rename or delete this method. DO NOT change its arguments.
     def new_process_arrived(self, new_process: PID, priority: int, process_type: str, memory_needed: int) -> PID:
+        if self.mmu.allocate_memory(memory_needed, new_process) == -1:
+            return -1
+        
         self.ready_queue.append(PCB(new_process, priority, process_type, memory_needed))
-        self.mmu.allocate_memory(self.memory, memory_needed, new_process)
 
         # Neither queue was active, so when a process arrives, it is the start of a new queue
         if self.scheduling_algorithm == MULTILEVEL and self.running is self.idle_pcb:
             self.active_queue_num_ticks = 0
+        
         self.choose_next_process()
         return self.running.pid  
 
     # This function is triggered every time the current process performs an exit syscall.
     # DO NOT rename or delete this method. DO NOT change its arguments.
     def syscall_exit(self) -> PID:
-        self.mmu.free_memory(self.memory, self.running.pid)
+        self.mmu.free_memory(self.running.pid)
         self.running = self.idle_pcb
         self.choose_next_process()
         return self.running.pid
@@ -299,50 +302,88 @@ class Kernel:
 # The simulator will create an instance of this object and use it to translate memory accesses.
 # DO NOT modify the name of this class or remove it.
 class MMU:
+    VIRTUAL_BASE = 0x20000000
+
+    memory_size: int
     # Called before the simulation begins (even before kernel __init__).
     # Use this function to initilize any variables you need throughout the simulation.
     # DO NOT rename or delete this method. DO NOT change its arguments.
     def __init__(self, logger):
         self.logger = logger
-        pass
+
+    def define_memory(self, memory_size: int):
+        self.memory = [(10485760, memory_size, None)]
 
     # Translate the virtual address to its physical address.
     # If it is not a valid address for the given process, return None which will cause a segmentation fault.
     # DO NOT rename or delete this method. DO NOT change its arguments.
     def translate(self, address: int, pid: PID) -> int | None:
+        # Locate the process's memory block
+        for start, end, id in self.memory:
+            # self.logger.log(f"Searching for {pid}: start: 0x{start:0x} end: 0x{end+1:0x} id: {id}\n")
+            if id == pid:
+                # self.logger.log(f"found allocation\n")
+                # Translate virtual to physical address
+                physical_address = address - self.VIRTUAL_BASE + start
+                # self.logger.log(f"vir add: 0x{address:0x} phys address 0x{physical_address:0x}\n")
+
+                # Check if the physical address is within bounds
+                if start <= physical_address <= end:
+                    # self.logger.log(f"in bounds\n")
+                    return physical_address
+                else:
+                    return None
         return None
 
     # Allocate a part of the memory (passed by the kernel) to the process with id: process_id
-    # Returns -1 if not enough space, otherwise returns process_id
-    def allocate_memory(self, memory, size, process_id):
-        for i, (start, end, pid) in enumerate(memory):
-            if pid is None and (end - start + 1) >= size:  # Found a hole
-                allocated_block = (start, start + size - 1, process_id)
-                remaining_block = (start + size, end, None) if start + size <= end else None
-                
-                memory[i] = allocated_block
-                if remaining_block:
-                    memory.insert(i + 1, remaining_block)
-                return process_id  # Allocation successful
-        return -1  # Not enough space
+    # Returns -1 if not enough space, otherwise returns pid
+    def allocate_memory(self, size:int, pid: PID):
+        best_fit_index = -1
+        best_fit_size = float('inf')
+
+        # Find the smallest free block that can accommodate the size
+        for i, (start, end, id) in enumerate(self.memory):
+            if id is None:  # Free block
+                block_size = end - start + 1
+                if block_size >= size and block_size < best_fit_size:
+                    best_fit_size = block_size
+                    best_fit_index = i
+
+        if best_fit_index == -1:
+            return -1  # No suitable block found
+
+        # Allocate memory in the best-fit block
+        start, end, _ = self.memory[best_fit_index]
+        allocated_block = (start, start + size - 1, pid)
+        remaining_block = (start + size, end, None) if start + size <= end else None
+
+        self.memory[best_fit_index] = allocated_block
+        if remaining_block:
+            self.memory.insert(best_fit_index + 1, remaining_block)
+
+        return pid
 
     # Deallocate the part of memory used by given process
     # Combine holes in memory
-    # Returns -1 if process was not found and process id if successful
-    def free_memory(self, memory, process_id):
-        for i, (start, end, pid) in enumerate(memory):
-            if pid == process_id:
-                memory[i] = (start, end, None)  # Mark as a hole
+    # Returns -1 if process was not found and pid if successful
+    def free_memory(self, pid):
+        for i, (start, end, id) in enumerate(self.memory):
+            if pid == id:
+                self.memory[i] = (start, end, None)  # Mark as a hole
                 
                 # Merge adjacent free blocks
-                if i > 0 and memory[i - 1][2] is None:
-                    memory[i - 1] = (memory[i - 1][0], end, None)
-                    del memory[i]
-                    i -= 1
-                if i < len(memory) - 1 and memory[i + 1][2] is None:
-                    memory[i] = (start, memory[i + 1][1], None)
-                    del memory[i + 1]
-                return process_id  # Deallocation successful
+                if i > 0 and self.memory[i - 1][2] is None:
+                    self.memory[i - 1] = (self.memory[i - 1][0], end, None)
+                    del self.memory[i]
+                    i -= 1  # Adjust index after deletion
+
+                # Merge with the next block if free
+                if i < len(self.memory) - 1 and self.memory[i + 1][2] is None:
+                    self.memory[i] = (self.memory[i][0], self.memory[i + 1][1], None)
+                    del self.memory[i + 1]
+
+                return pid  # Deallocation successful
+            
         return -1  # Process not found
 
 def exceeded_quantum(pcb: PCB) -> bool:
